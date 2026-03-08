@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistics Study App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Statistics Study App</h1>
+    <p class="subtitle">71 Formulas &amp; Concepts</p>
+    <nav>
+      <button class="nav-btn active" data-mode="flashcards">Flashcards</button>
+      <button class="nav-btn" data-mode="quiz">Quiz</button>
+      <button class="nav-btn" data-mode="reference">Reference</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Category Filter Bar -->
+    <div id="filter-bar">
+      <button class="cat-btn active" data-cat="all">All (71)</button>
+    </div>
+
+    <!-- ===== FLASHCARD MODE ===== -->
+    <section id="flashcards-mode" class="mode-section">
+      <div class="flashcard-controls">
+        <button id="prev-card" title="Previous">&#9664;</button>
+        <span id="card-counter">1 / 71</span>
+        <button id="next-card" title="Next">&#9654;</button>
+        <button id="shuffle-btn" title="Shuffle">Shuffle</button>
+      </div>
+      <div id="flashcard" class="flashcard" tabindex="0">
+        <div class="flashcard-inner">
+          <div class="flashcard-front">
+            <span class="card-id"></span>
+            <span class="card-category"></span>
+            <h2 class="card-name"></h2>
+            <p class="flip-hint">Click or press Space to reveal</p>
+          </div>
+          <div class="flashcard-back">
+            <span class="card-id"></span>
+            <span class="card-category"></span>
+            <h2 class="card-formula"></h2>
+            <p class="flip-hint">Click or press Space to flip back</p>
+          </div>
+        </div>
+      </div>
+      <div class="confidence-btns">
+        <button class="conf-btn" data-conf="hard">Hard</button>
+        <button class="conf-btn" data-conf="okay">Okay</button>
+        <button class="conf-btn" data-conf="easy">Easy</button>
+      </div>
+      <div id="progress-bar-container">
+        <div id="progress-bar"></div>
+      </div>
+      <div id="score-summary">
+        <span id="hard-count" class="score-chip hard">Hard: 0</span>
+        <span id="okay-count" class="score-chip okay">Okay: 0</span>
+        <span id="easy-count" class="score-chip easy">Easy: 0</span>
+      </div>
+    </section>
+
+    <!-- ===== QUIZ MODE ===== -->
+    <section id="quiz-mode" class="mode-section hidden">
+      <div id="quiz-setup">
+        <h2>Quiz Setup</h2>
+        <label>Number of questions:
+          <select id="quiz-count">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="71">All 71</option>
+          </select>
+        </label>
+        <label>Question style:
+          <select id="quiz-style">
+            <option value="name-to-formula">Name → Formula</option>
+            <option value="formula-to-name">Formula → Name</option>
+            <option value="mixed">Mixed</option>
+          </select>
+        </label>
+        <button id="start-quiz">Start Quiz</button>
+      </div>
+      <div id="quiz-active" class="hidden">
+        <div id="quiz-progress">Question <span id="q-num">1</span> / <span id="q-total">10</span></div>
+        <div id="quiz-question">
+          <h2 id="q-prompt"></h2>
+          <div id="q-options"></div>
+        </div>
+        <div id="quiz-feedback" class="hidden"></div>
+        <button id="quiz-next" class="hidden">Next Question</button>
+      </div>
+      <div id="quiz-results" class="hidden">
+        <h2>Quiz Complete!</h2>
+        <p id="quiz-score"></p>
+        <div id="quiz-review"></div>
+        <button id="quiz-restart">Try Again</button>
+      </div>
+    </section>
+
+    <!-- ===== REFERENCE MODE ===== -->
+    <section id="reference-mode" class="mode-section hidden">
+      <input type="text" id="search-box" placeholder="Search formulas...">
+      <table id="ref-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Formula / Concept</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody id="ref-body"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>Statistics Study App &mdash; 71 formulas from probability, statistics, and quantitative finance</p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
