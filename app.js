@@ -62,6 +62,8 @@
       activeMode = btn.dataset.mode;
       modeSections.forEach((s) => s.classList.add("hidden"));
       $(`#${activeMode}-mode`).classList.remove("hidden");
+      // Show/hide formula category filter bar (not relevant for questions mode)
+      filterBar.classList.toggle("hidden", activeMode === "questions");
     });
   });
 
@@ -333,4 +335,128 @@
   }
 
   searchBox.addEventListener("input", renderReference);
+
+  // === Questions Mode ===
+  const qSearch = $("#q-search");
+  const qFilterDifficulty = $("#q-filter-difficulty");
+  const qFilterFirm = $("#q-filter-firm");
+  const qFilterSubject = $("#q-filter-subject");
+  const qFilterTheme = $("#q-filter-theme");
+  const questionsList = $("#questions-list");
+
+  // Build filter dropdowns
+  FIRMS.forEach((f) => {
+    const opt = document.createElement("option");
+    opt.value = f;
+    opt.textContent = f;
+    qFilterFirm.appendChild(opt);
+  });
+  SUBJECTS.forEach((s) => {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    qFilterSubject.appendChild(opt);
+  });
+  THEMES.forEach((t) => {
+    const opt = document.createElement("option");
+    opt.value = t;
+    opt.textContent = t;
+    qFilterTheme.appendChild(opt);
+  });
+
+  // Build formula lookup map
+  const formulaMap = {};
+  FORMULAS.forEach((f) => { formulaMap[f.id] = f; });
+
+  function getFilteredQuestions() {
+    const search = qSearch.value.toLowerCase();
+    const diff = qFilterDifficulty.value;
+    const firm = qFilterFirm.value;
+    const subject = qFilterSubject.value;
+    const theme = qFilterTheme.value;
+
+    return QUESTIONS.filter((q) => {
+      if (diff !== "all" && q.difficulty !== diff) return false;
+      if (firm !== "all" && q.firm !== firm) return false;
+      if (subject !== "all" && q.subject !== subject) return false;
+      if (theme !== "all") {
+        if (!q.theme || !q.theme.split("|").includes(theme)) return false;
+      }
+      if (search) {
+        const hay = `${q.id} ${q.name} ${q.firm} ${q.subject} ${q.framework || ""} ${q.theme || ""} ${q.formula_ids.join(" ")}`.toLowerCase();
+        if (!hay.includes(search)) return false;
+      }
+      return true;
+    });
+  }
+
+  function renderQuestions() {
+    const filtered = getFilteredQuestions();
+    questionsList.innerHTML = "";
+
+    // Stats
+    const easy = filtered.filter((q) => q.difficulty === "Easy").length;
+    const med = filtered.filter((q) => q.difficulty === "Medium").length;
+    const hard = filtered.filter((q) => q.difficulty === "Hard").length;
+    $("#q-count-display").textContent = `Showing ${filtered.length} of ${QUESTIONS.length} questions`;
+    $("#q-diff-breakdown").innerHTML =
+      `<span style="color:var(--green)">${easy} Easy</span>` +
+      `<span style="color:var(--orange)">${med} Medium</span>` +
+      `<span style="color:var(--red)">${hard} Hard</span>`;
+
+    filtered.forEach((q) => {
+      const card = document.createElement("div");
+      card.className = "q-card";
+      card.dataset.id = q.id;
+
+      const themes = q.theme ? q.theme.split("|").map((t) => `<span class="q-tag theme">${t}</span>`).join("") : "";
+      const frameworks = q.framework ? q.framework.split("|").map((f) => `<span class="q-tag">${f}</span>`).join("") : "";
+
+      // Build formula badges with tooltips
+      let formulaBadges = "";
+      if (q.formula_ids.length > 0) {
+        formulaBadges = q.formula_ids.map((fid) => {
+          const f = formulaMap[fid];
+          const tip = f ? f.formula : fid;
+          return `<span class="q-formula-link" title="${tip}">${fid}</span>`;
+        }).join("");
+      }
+
+      card.innerHTML = `
+        <div class="q-card-header">
+          <span class="q-card-id">#${q.id}</span>
+          <span class="q-card-name">${q.name}</span>
+          <span class="q-card-difficulty ${q.difficulty.toLowerCase()}">${q.difficulty}</span>
+        </div>
+        <div class="q-card-meta">
+          <span class="q-tag firm">${q.firm}</span>
+          <span class="q-tag subject">${q.subject}</span>
+          ${frameworks}
+          ${themes}
+        </div>
+        <div class="q-card-detail">
+          ${q.framework ? `<div class="q-detail-row"><span class="q-detail-label">Framework</span><span class="q-detail-value">${q.framework}</span></div>` : ""}
+          ${q.theme ? `<div class="q-detail-row"><span class="q-detail-label">Theme</span><span class="q-detail-value">${q.theme}</span></div>` : ""}
+          ${q.formula_ids.length > 0 ? `<div class="q-detail-row"><span class="q-detail-label">Formulas</span><span class="q-detail-value">${formulaBadges}</span></div>` : ""}
+          ${q.formula_ids.length > 0 ? `<div style="margin-top:0.5rem">${q.formula_ids.map((fid) => {
+            const f = formulaMap[fid];
+            return f ? `<div style="font-size:0.8rem;margin-bottom:0.3rem"><span class="q-formula-link">${fid}</span> <span class="formula-tooltip">${f.formula}</span></div>` : "";
+          }).join("")}</div>` : '<div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem">No linked formulas (logic/brainteaser)</div>'}
+        </div>
+      `;
+
+      card.addEventListener("click", () => card.classList.toggle("expanded"));
+      questionsList.appendChild(card);
+    });
+  }
+
+  // Question filter listeners
+  qSearch.addEventListener("input", renderQuestions);
+  qFilterDifficulty.addEventListener("change", renderQuestions);
+  qFilterFirm.addEventListener("change", renderQuestions);
+  qFilterSubject.addEventListener("change", renderQuestions);
+  qFilterTheme.addEventListener("change", renderQuestions);
+
+  // Initial render
+  renderQuestions();
 })();

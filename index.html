@@ -9,16 +9,17 @@
 <body>
   <header>
     <h1>Statistics Study App</h1>
-    <p class="subtitle">71 Formulas &amp; Concepts</p>
+    <p class="subtitle">71 Formulas &amp; 270 Interview Questions</p>
     <nav>
       <button class="nav-btn active" data-mode="flashcards">Flashcards</button>
       <button class="nav-btn" data-mode="quiz">Quiz</button>
+      <button class="nav-btn" data-mode="questions">Questions</button>
       <button class="nav-btn" data-mode="reference">Reference</button>
     </nav>
   </header>
 
   <main>
-    <!-- Category Filter Bar -->
+    <!-- Category Filter Bar (for formulas modes) -->
     <div id="filter-bar">
       <button class="cat-btn active" data-cat="all">All (71)</button>
     </div>
@@ -76,8 +77,8 @@
         </label>
         <label>Question style:
           <select id="quiz-style">
-            <option value="name-to-formula">Name → Formula</option>
-            <option value="formula-to-name">Formula → Name</option>
+            <option value="name-to-formula">Name &rarr; Formula</option>
+            <option value="formula-to-name">Formula &rarr; Name</option>
             <option value="mixed">Mixed</option>
           </select>
         </label>
@@ -100,6 +101,35 @@
       </div>
     </section>
 
+    <!-- ===== QUESTIONS MODE ===== -->
+    <section id="questions-mode" class="mode-section hidden">
+      <div id="questions-filters">
+        <input type="text" id="q-search" placeholder="Search questions...">
+        <div id="q-filter-row">
+          <select id="q-filter-difficulty">
+            <option value="all">All Difficulties</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+          <select id="q-filter-firm">
+            <option value="all">All Firms</option>
+          </select>
+          <select id="q-filter-subject">
+            <option value="all">All Subjects</option>
+          </select>
+          <select id="q-filter-theme">
+            <option value="all">All Themes</option>
+          </select>
+        </div>
+        <div id="q-stats-bar">
+          <span id="q-count-display">Showing 270 of 270 questions</span>
+          <span id="q-diff-breakdown"></span>
+        </div>
+      </div>
+      <div id="questions-list"></div>
+    </section>
+
     <!-- ===== REFERENCE MODE ===== -->
     <section id="reference-mode" class="mode-section hidden">
       <input type="text" id="search-box" placeholder="Search formulas...">
@@ -118,10 +148,11 @@
   </main>
 
   <footer>
-    <p>Statistics Study App &mdash; 71 formulas from probability, statistics, and quantitative finance</p>
+    <p>Statistics Study App &mdash; 71 formulas &amp; 270 interview questions from top quant firms</p>
   </footer>
 
   <script src="data.js"></script>
+  <script src="questions.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

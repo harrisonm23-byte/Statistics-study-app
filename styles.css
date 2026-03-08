@@ -391,6 +391,142 @@ main {
   font-size: 0.8rem;
 }
 
+/* === Questions Mode === */
+#questions-filters {
+  margin-bottom: 1.25rem;
+}
+#q-search {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+#q-search::placeholder { color: var(--text-muted); }
+#q-filter-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+#q-filter-row select {
+  flex: 1;
+  min-width: 140px;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+#q-stats-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 0 0.25rem;
+}
+#q-diff-breakdown { display: flex; gap: 0.75rem; }
+
+/* Question Card */
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.q-card:hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+}
+.q-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.4rem;
+}
+.q-card-id {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  min-width: 28px;
+}
+.q-card-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  flex: 1;
+}
+.q-card-difficulty {
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+.q-card-difficulty.easy { background: #14532d44; color: var(--green); }
+.q-card-difficulty.medium { background: #78350f44; color: var(--orange); }
+.q-card-difficulty.hard { background: #7f1d1d44; color: var(--red); }
+
+.q-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+.q-tag {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 9999px;
+  background: var(--bg);
+  color: var(--text-muted);
+  border: 1px solid #334155;
+}
+.q-tag.firm { color: var(--accent); border-color: var(--accent-dim); }
+.q-tag.subject { color: #a78bfa; border-color: #7c3aed44; }
+.q-tag.theme { color: var(--yellow); border-color: #a1660044; }
+
+/* Question Expanded Detail */
+.q-card-detail {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.q-card.expanded .q-card-detail { display: block; }
+.q-detail-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+}
+.q-detail-label {
+  color: var(--text-muted);
+  min-width: 80px;
+}
+.q-detail-value { color: var(--text); }
+.q-formula-link {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  background: var(--accent-dim);
+  color: #fff;
+  margin-right: 0.3rem;
+  margin-bottom: 0.3rem;
+  cursor: default;
+}
+.q-formula-link .formula-tooltip {
+  font-family: 'Cambria Math', 'Times New Roman', serif;
+  color: var(--yellow);
+  font-size: 0.8rem;
+}
+
 /* === Utility === */
 .hidden { display: none !important; }
 
